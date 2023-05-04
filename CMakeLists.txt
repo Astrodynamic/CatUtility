@@ -10,17 +10,21 @@ include_directories(
 )
 
 set(HEADERS
-  model/cat_utility.h
+  ${CMAKE_SOURCE_DIR}/model/cat_utility.h
 )
 
 set(SOURCES
-  model/cat_utility.c
+  ${CMAKE_SOURCE_DIR}/model/cat_utility.c
+)
+
+set(BUILD_FILES
+  ${HEADERS}
+  ${SOURCES}
+  ${CMAKE_SOURCE_DIR}/main.c
 )
 
 add_executable(${PROJECT_NAME}
-  ${HEADERS}
-  ${SOURCES}
-  main.c
+  ${BUILD_FILES}
 )
 
 target_compile_options(
@@ -38,3 +42,39 @@ target_link_libraries(
   PRIVATE
   -fsanitize=address
 )
+
+# Add cppcheck
+find_program(CPPCHECK cppcheck)
+if(CPPCHECK)
+  message(STATUS "cppcheck found: ${CPPCHECK}")
+  list(
+    APPEND CPPCHECK_ARGS
+    "--enable=all"
+    "--inconclusive"
+    "--quiet"
+    "--std=c11"
+    "--suppress=missingIncludeSystem"
+    "--suppress=unusedFunction"
+    "--suppress=missingInclude"
+    "--suppress=unusedStructMember"
+    "--suppress=variableScope"
+  )
+  add_custom_target(
+    cppcheck
+    COMMAND ${CPPCHECK} ${CPPCHECK_ARGS} ${BUILD_FILES}
+  )
+else()
+  message(STATUS "cppcheck not found")
+endif()
+
+# Add clang-format
+find_program(CLANG_FORMAT clang-format)
+if(CLANG_FORMAT)
+  message(STATUS "clang-format found: ${CLANG_FORMAT}")
+  add_custom_target(
+    clang-format
+    COMMAND ${CLANG_FORMAT} -i -style=Google ${BUILD_FILES}
+  )
+else()
+  message(STATUS "clang-format not found")
+endif()

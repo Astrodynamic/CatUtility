@@ -1,8 +1,9 @@
 #include "cat_utility.h"
 
-void check_cat_options(int* argc, char*** argv, c_opt* opt) {
+void check_cat_options(int *argc, char ***argv, c_opt *opt) {
   int opt_val = 0;
-  while ((opt_val = getopt_long(*argc, *argv, opt->s_opt, opt->l_opt, NULL)) != EOF) {
+  while ((opt_val = getopt_long(*argc, *argv, opt->s_opt, opt->l_opt, NULL)) !=
+         EOF) {
     switch (opt_val) {
       case 'b':
         opt->mutual |= OPT_NUM_NONBLANK;
@@ -35,40 +36,39 @@ void check_cat_options(int* argc, char*** argv, c_opt* opt) {
   *argv += optind;
 }
 
-void cat_print_with_opt(const int argc, char** const argv, c_opt* opt) {
+void cat_print_with_opt(const int argc, char **const argv, c_opt *opt) {
   for (int i = 0; i < argc; ++i) {
-    FILE* fp = fopen(*(argv + i), "r");
+    FILE *fp = fopen(*(argv + i), "r");
     if (fp == NULL)
-      fprintf(stderr, "%s: %s: %s\n", *(argv - optind), *(argv + i), strerror(errno));
+      fprintf(stderr, "%s: %s: %s\n", *(argv - optind), *(argv + i),
+              strerror(errno));
     else if (opt->mutual == OPT_DEFAULT)
       print_without_opt(fp);
     else
       print_with_opt(fp, opt);
-    if (fp != NULL)
-      fclose(fp);
+    if (fp != NULL) fclose(fp);
   }
 }
 
-void print_without_opt(FILE* fp) {
+void print_without_opt(FILE *fp) {
   char ch;
-  while ((ch = fgetc(fp)) != EOF)
-    fputc(ch, stdout);
+  while ((ch = fgetc(fp)) != EOF) fputc(ch, stdout);
 }
 
-void print_with_opt(FILE* fp, c_opt* opt) {
+void print_with_opt(FILE *fp, c_opt *opt) {
   int ch, skip = 0, line = 0, prev_ch;
   for (prev_ch = '\n'; (ch = fgetc(fp)) != EOF; prev_ch = ch) {
     if (prev_ch == '\n') {
       if (opt->mutual & OPT_SQUEEZE) {
         if (ch == '\n') {
-          if (skip)
-            continue;
+          if (skip) continue;
           skip = 1;
         } else {
           skip = 0;
         }
       }
-      if (((opt->mutual & OPT_NUM_ALL_LINE) && !(opt->mutual & OPT_NUM_NONBLANK)) ||
+      if (((opt->mutual & OPT_NUM_ALL_LINE) &&
+           !(opt->mutual & OPT_NUM_NONBLANK)) ||
           ((opt->mutual & OPT_NUM_NONBLANK) && ch != '\n'))
         fprintf(stdout, "%6d\t", ++line);
     }

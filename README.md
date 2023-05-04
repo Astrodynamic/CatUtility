@@ -1,17 +1,17 @@
 # Cat Utility in C
 
-This project is an implementation of the `cat` utility in C language of C11 standard using gcc compiler, following the POSIX.1-2017 standard. The `cat` utility is used to display, combine copies of, and create new text files. This implementation supports all flags specified in the project requirements, including GNU versions.
+This project is an implementation of the `cat` utility in C, based on the C11 standard and compiled with gcc, following the POSIX.1-2017 standard. The `cat` utility is used to display, combine, and create text files. This implementation supports all flags specified in the project requirements, including the GNU versions.
 
 ## Build
 
-To build the `cat` utility, you can use the Makefile provided in the `build/` directory. The Makefile has the following targets:
+To build the `cat` utility, you can use the Makefile provided in the `build/` directory. The Makefile includes the following targets:
 
-- `all`: build the program.
-- `build`: install the program.
-- `rebuild`: clean the build directory and install the program.
-- `install`: create the build directory and compile the program in it.
-- `uninstall`: remove the build directory.
-- `clean`: remove the build directory and all object files.
+- `all`: Builds the program.
+- `build`: Installs the program.
+- `rebuild`: Cleans the build directory and installs the program.
+- `install`: Creates the build directory and compiles the program in it.
+- `uninstall`: Removes the build directory.
+- `clean`: Removes the build directory and all object files.
 
 To build the program, run:
 
@@ -27,11 +27,11 @@ The `cat` utility takes one or more file names as arguments. It reads each file 
 
 The following flags are supported:
 
-- `-b` (`--number-nonblank`): number only non-empty lines.
-- `-e` (implies `-v`, GNU only: `-E` the same, but without implying `-v`): display end-of-line characters as `$`.
-- `-n` (`--number`): number all output lines.
-- `-s` (`--squeeze-blank`): squeeze multiple adjacent blank lines.
-- `-t` (implies `-v`, GNU: `-T` the same, but without implying `-v`): display tabs as `^I`.
+- `-b` (`--number-nonblank`): Numbers only non-empty lines.
+- `-e` (implies `-v`, GNU only: `-E` the same, but without implying `-v`): Displays end-of-line characters as `$`.
+- `-n` (`--number`): Numbers all output lines.
+- `-s` (`--squeeze-blank`): Squeezes multiple adjacent blank lines.
+- `-t` (implies `-v`, GNU: `-T` the same, but without implying `-v`): Displays tabs as `^I`.
 
 For example, to display the contents of a file named `example.txt` and number all output lines, run:
 

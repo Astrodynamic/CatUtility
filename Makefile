@@ -14,4 +14,10 @@ unistall:
 clean: unistall
 	rm -rf ./lib/*
 
-.PHONY: all build rebuild app unistall clean
+cppcheck:
+	@cd build/; make cppcheck
+
+clang-format:
+	@cd build/; make clang-format
+
+.PHONY: all build rebuild app unistall clean cppcheck clang-format
